@@ -1,0 +1,60 @@
+type ActivitySession = {
+    date: string,
+    distance: number,
+    duration: number,
+    heartRate: {
+        min: number,
+        max: number,
+        average: number
+    },
+    caloriesBurned: number,
+}  
+
+type UserActivityApiResponse = ActivitySession[];
+
+export const mockUserActivity : UserActivityApiResponse = [
+    {
+        date: "2025-01-04",
+        distance: 5.8,
+        duration: 38,
+        heartRate: {
+            min: 140,
+            max: 178,
+            average: 163
+        },
+        caloriesBurned: 422
+    },
+    {
+        date: "2025-01-05",
+        distance: 3.2,
+        duration: 20,
+        heartRate: {
+            min: 148,
+            max: 184,
+            average: 171
+        },
+        caloriesBurned: 248
+    },
+    {
+        date: "2025-01-09",
+        distance: 6.4,
+        duration: 42,
+        heartRate: {
+            min: 140,
+            max: 176,
+            average: 163
+        },
+        caloriesBurned: 468
+    },
+    {
+        date: "2025-01-12",
+        distance: 7.5,
+        duration: 50,
+        heartRate: {
+            min: 138,
+            max: 178,
+            average: 162
+        },
+        caloriesBurned: 532
+    }
+]

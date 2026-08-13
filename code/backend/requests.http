@@ -1,0 +1,28 @@
+@baseUrl = http://localhost:8000
+
+### Vérifier le refus sans token
+
+GET {{baseUrl}}/api/user-info
+
+### Se connecter
+# @name login
+
+POST {{baseUrl}}/api/login
+Content-Type: application/json
+
+{
+  "username": "sophiemartin",
+  "password": "password123"
+}
+
+
+### Récupérer le profil avec le token de la connexion
+
+GET {{baseUrl}}/api/user-info
+Authorization: Bearer {{login.response.body.$.token}}
+
+
+### Récupérer les activités avec le token de la connexion
+
+GET {{baseUrl}}/api/user-activity?startWeek=2025-01-01&endWeek=2025-01-12
+Authorization: Bearer {{login.response.body.$.token}}
