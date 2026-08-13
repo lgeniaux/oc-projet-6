@@ -1,18 +1,6 @@
-type ActivitySession = {
-    date: string,
-    distance: number,
-    duration: number,
-    heartRate: {
-        min: number,
-        max: number,
-        average: number
-    },
-    caloriesBurned: number,
-}  
+import type { UserActivityDTO } from "./user-activity.types";
 
-type UserActivityApiResponse = ActivitySession[];
-
-export const mockUserActivity : UserActivityApiResponse = [
+export const mockUserActivity : UserActivityDTO = [
     {
         date: "2025-01-04",
         distance: 5.8,
