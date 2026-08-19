@@ -1,4 +1,5 @@
 import type { Route } from "./+types/home";
+import { LoginForm } from "../components/login-form/login-form";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -12,6 +13,7 @@ export default function Home() {
     <main>
       <h1>SportSee</h1>
       <p>Suivez vos performances sportives</p>
+      <LoginForm />
     </main>
   );
 }

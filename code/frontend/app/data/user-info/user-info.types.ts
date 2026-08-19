@@ -1,4 +1,4 @@
-export type UserInfoDTO = {
+type UserInfoDTO = {
     profile: {
         firstName: string;
         lastName: string;
@@ -15,7 +15,7 @@ export type UserInfoDTO = {
     };
 };
 
-export type UserInfo = {
+type UserInfo = {
     profile: {
         firstName: string;
         lastName: string;
@@ -31,3 +31,5 @@ export type UserInfo = {
         totalDuration: number;
     };
 };
+
+export type { UserInfoDTO, UserInfo };
