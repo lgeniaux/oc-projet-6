@@ -10,7 +10,9 @@ export async function login(request: LoginRequestDTO): Promise<LoginResponseDTO>
     });
 
     if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(response.status === 401
+            ? "Identifiant ou mot de passe incorrect"
+            : "Connexion au serveur impossible");
     }
 
     const data: LoginResponseDTO = await response.json();
