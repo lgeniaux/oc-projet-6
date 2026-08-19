@@ -5,12 +5,20 @@ type AuthContextValue = {
     setToken: (token: string) => void;
 };
 
+type AuthProviderProps = {
+    children: ReactNode;
+};
+
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-    const [token, setTokenState] = useState<string | null>(() =>
-        typeof window === "undefined" ? null : sessionStorage.getItem("token")
-    );
+export function AuthProvider(props: AuthProviderProps) {
+    let savedToken: string | null = null;
+
+    if (typeof window !== "undefined") {
+        savedToken = sessionStorage.getItem("token");
+    }
+
+    const [token, setTokenState] = useState<string | null>(savedToken);
 
     function setToken(token: string) {
         sessionStorage.setItem("token", token);
@@ -19,7 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return (
         <AuthContext.Provider value={{ token, setToken }}>
-            {children}
+            {props.children}
         </AuthContext.Provider>
     );
 }
