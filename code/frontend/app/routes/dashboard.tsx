@@ -1,6 +1,7 @@
-import type { Route } from "./+types/dashboard";
+import { DistanceChart } from "../components/distance-chart/distance-chart";
+import { mockUserActivity } from "../data/user-activity/user-activity.mock";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
     return [
         { title: "SportSee - Dashboard" },
         { name: "description", content: "Tableau de bord" },
@@ -9,8 +10,9 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Dashboard() {
     return (
-        <main>
-            <h1>Dashboard</h1>
+        <main className="dashboard">
+            <h1>Vos dernières performances</h1>
+            <DistanceChart activity={mockUserActivity} />
         </main>
     );
 }

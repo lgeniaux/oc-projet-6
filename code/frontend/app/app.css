@@ -13,3 +13,53 @@ body {
     color-scheme: dark;
   }
 }
+
+.dashboard {
+  min-height: 100vh;
+  padding: 64px max(24px, calc((100% - 1140px) / 2));
+  background: #f2f3ff;
+  color: #111;
+}
+
+.dashboard > h1 {
+  margin: 0 0 30px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.distance-card {
+  width: min(445px, 100%);
+  padding: 28px 40px 24px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.distance-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.distance-card__header h2 {
+  margin: 0;
+  color: #0b23f4;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.distance-card__header p {
+  margin: 8px 0 0;
+  color: #707070;
+  font-size: 12px;
+}
+
+.distance-card__header > p {
+  white-space: nowrap;
+}
+
+.distance-card__chart {
+  height: 300px;
+  margin-top: 20px;
+  font-size: 12px;
+}
