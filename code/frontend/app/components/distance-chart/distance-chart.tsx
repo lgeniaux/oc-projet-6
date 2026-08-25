@@ -10,7 +10,7 @@ import {
 import type { UserActivityDTO } from "../../data/user-activity/user-activity.types";
 import {
     mapActivityToWeeklyDistances,
-} from "../../data/user-activity/user-activity.mapper";
+} from "../../data/user-activity/user-activity.service";
 
 type DistanceChartProps = {
     activity: UserActivityDTO;

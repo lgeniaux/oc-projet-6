@@ -27,8 +27,17 @@ body {
   font-weight: 500;
 }
 
+.dashboard__charts {
+  display: grid;
+  grid-template-columns: minmax(0, 445px) minmax(0, 583px);
+  gap: 24px;
+  align-items: stretch;
+}
+
 .distance-card {
   width: min(445px, 100%);
+  box-sizing: border-box;
+  min-height: 484px;
   padding: 28px 40px 24px;
   border-radius: 10px;
   background: #fff;
@@ -62,4 +71,121 @@ body {
   height: 300px;
   margin-top: 20px;
   font-size: 12px;
+}
+
+.heart-rate-card {
+  box-sizing: border-box;
+  width: min(583px, 100%);
+  min-height: 484px;
+  padding: 28px 40px 24px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.heart-rate-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.heart-rate-card__header h2 {
+  margin: 0;
+  color: #f4320b;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.heart-rate-card__header p {
+  margin: 8px 0 0;
+  color: #707070;
+  font-size: 12px;
+}
+
+.heart-rate-card__header > p {
+  white-space: nowrap;
+}
+
+.heart-rate-card__chart {
+  height: 300px;
+  margin-top: 20px;
+  color: #707070;
+  font-size: 12px;
+}
+
+.heart-rate-card__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-top: 18px;
+  color: #707070;
+  font-size: 12px;
+}
+
+.heart-rate-card__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.heart-rate-card__legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.heart-rate-card__legend-dot--min {
+  background: #f99885;
+}
+
+.heart-rate-card__legend-dot--max {
+  background: #f4320b;
+}
+
+.heart-rate-card__legend-dot--average {
+  background: #0b23f4;
+}
+
+.distance-card,
+.heart-rate-card {
+  transition: box-shadow 180ms ease;
+}
+
+.distance-card:hover,
+.heart-rate-card:hover {
+  box-shadow: 0 4px 54px -18px rgba(157, 167, 251, 0.6);
+}
+
+@media (max-width: 1120px) {
+  .dashboard__charts {
+    grid-template-columns: minmax(0, 583px);
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard {
+    padding: 40px 24px;
+  }
+
+  .distance-card,
+  .heart-rate-card {
+    min-height: auto;
+    padding: 24px;
+  }
+
+  .distance-card__header,
+  .heart-rate-card__header {
+    flex-direction: column;
+  }
+
+  .heart-rate-card__chart {
+    height: 300px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .distance-card,
+  .heart-rate-card {
+    transition: none;
+  }
 }

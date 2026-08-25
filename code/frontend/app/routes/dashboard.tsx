@@ -1,4 +1,5 @@
 import { DistanceChart } from "../components/distance-chart/distance-chart";
+import { HeartRateChart } from "../components/heart-rate-chart/heart-rate-chart";
 import { mockUserActivity } from "../data/user-activity/user-activity.mock";
 
 export function meta() {
@@ -12,7 +13,10 @@ export default function Dashboard() {
     return (
         <main className="dashboard">
             <h1>Vos dernières performances</h1>
-            <DistanceChart activity={mockUserActivity} />
+            <div className="dashboard__charts">
+                <DistanceChart activity={mockUserActivity} />
+                <HeartRateChart activity={mockUserActivity} />
+            </div>
         </main>
     );
 }

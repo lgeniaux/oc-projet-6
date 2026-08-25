@@ -10,6 +10,16 @@ export type WeeklyDistance = {
     endDate: string;
 };
 
+const WEEK_DAYS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+
+export type DailyHeartRate = {
+    day: string;
+    date: string;
+    min: number | null;
+    max: number | null;
+    average: number | null;
+};
+
 function parseDate(date: string) {
     return new Date(date + "T00:00:00Z");
 }
@@ -75,4 +85,68 @@ export function mapActivityToWeeklyDistances(activity: UserActivityDTO): WeeklyD
     }
 
     return weeks;
+}
+
+export function getWeeklyHeartRates(activity: UserActivityDTO): DailyHeartRate[] {
+    if (activity.length === 0) {
+        return [];
+    }
+
+    let latestDate = activity[0].date;
+
+    for (const session of activity) {
+        if (session.date > latestDate) {
+            latestDate = session.date;
+        }
+    }
+
+    const monday = startOfWeek(parseDate(latestDate));
+    const days: DailyHeartRate[] = [];
+    const sessionCounts = [0, 0, 0, 0, 0, 0, 0];
+
+    for (let index = 0; index < 7; index++) {
+        const date = new Date(monday.getTime() + index * DAY_IN_MS);
+
+        days.push({
+            day: WEEK_DAYS[index],
+            date: toISODate(date),
+            min: null,
+            max: null,
+            average: null,
+        });
+    }
+
+    for (const session of activity) {
+        const dayIndex = Math.floor(
+            (parseDate(session.date).getTime() - monday.getTime()) / DAY_IN_MS
+        );
+
+        if (dayIndex < 0 || dayIndex >= days.length) {
+            continue;
+        }
+
+        const day = days[dayIndex];
+        const heartRate = session.heartRate;
+
+        if (day.min === null || heartRate.min < day.min) {
+            day.min = heartRate.min;
+        }
+
+        if (day.max === null || heartRate.max > day.max) {
+            day.max = heartRate.max;
+        }
+
+        const count = sessionCounts[dayIndex];
+        const currentAverage = day.average ?? 0;
+        day.average = (currentAverage * count + heartRate.average) / (count + 1);
+        sessionCounts[dayIndex] = count + 1;
+    }
+
+    for (const day of days) {
+        if (day.average !== null) {
+            day.average = Number(day.average.toFixed(1));
+        }
+    }
+
+    return days;
 }
