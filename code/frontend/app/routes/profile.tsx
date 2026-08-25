@@ -1,7 +1,6 @@
 import type { Route } from "./+types/profile";
 import { UserSummary } from "../components/user-summary/user-summary";
-import { mapUserInfoDTOToUserInfo } from "../data/user-info/user-info.mapper";
-import { mockUserInfo } from "../data/user-info/user-info.mock";
+import { useUserInfo } from "../hooks/use-user-info";
 
 
 export function meta({}: Route.MetaArgs) {
@@ -12,10 +11,29 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Profile() {
+    const { userInfo, loading, error } = useUserInfo();
+
+    if (loading) {
+        return (
+            <main className="profile-page">
+                <p className="page-status" aria-live="polite">Chargement du profil…</p>
+            </main>
+        );
+    }
+
+    if (error || !userInfo) {
+        return (
+            <main className="profile-page">
+                <p className="page-status page-status--error" role="alert">
+                    {error ?? "Profil indisponible"}
+                </p>
+            </main>
+        );
+    }
+
     return (
-        <main>
-            <h1>Profile</h1>
-            <UserSummary userInfo={mapUserInfoDTOToUserInfo(mockUserInfo)} />
+        <main className="profile-page">
+            <UserSummary userInfo={userInfo} />
         </main>
     );
 }

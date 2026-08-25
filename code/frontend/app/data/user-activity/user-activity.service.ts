@@ -3,6 +3,8 @@ import type { UserActivityDTO } from "./user-activity.types";
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 const WEEK_IN_MS = 7 * DAY_IN_MS;
 
+const USER_ACTIVITY_URL = "http://localhost:8000/api/user-activity";
+
 export type WeeklyDistance = {
     week: string;
     distance: number;
@@ -194,4 +196,28 @@ export function getWeeklySummary(activity: UserActivityDTO): WeeklySummary | nul
 
     summary.distance = Number(summary.distance.toFixed(1));
     return summary;
+}
+
+export async function getUserActivity(token: string): Promise<UserActivityDTO> {
+    const endDate = new Date().toISOString().slice(0, 10);
+    const searchParams = new URLSearchParams({
+        startWeek: "2000-01-01",
+        endWeek: endDate,
+    });
+    const response = await fetch(`${USER_ACTIVITY_URL}?${searchParams}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+            throw new Error("Votre session a expiré");
+        }
+
+        throw new Error("Impossible de charger les activités");
+    }
+
+    const data: UserActivityDTO = await response.json();
+    return data;
 }
