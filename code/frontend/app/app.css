@@ -146,18 +146,152 @@ body {
   background: #0b23f4;
 }
 
+.weekly-summary {
+  width: min(1052px, 100%);
+  margin-top: 64px;
+}
+
+.weekly-summary__header {
+  margin-bottom: 28px;
+}
+
+.weekly-summary__header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.weekly-summary__header p {
+  margin: 8px 0 0;
+  color: #707070;
+  font-size: 14px;
+}
+
+.weekly-summary__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 450px) minmax(0, 1fr);
+  gap: 24px;
+}
+
+.weekly-goal-card {
+  box-sizing: border-box;
+  min-height: 342px;
+  padding: 28px 38px 24px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.weekly-goal-card h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.weekly-goal-card h3 strong {
+  color: #0b23f4;
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.weekly-goal-card h3 span {
+  color: #aab2ff;
+}
+
+.weekly-goal-card header p {
+  margin: 8px 0 0;
+  color: #707070;
+  font-size: 14px;
+}
+
+.weekly-goal-card__chart {
+  height: 170px;
+  margin-top: 2px;
+}
+
+.weekly-goal-card__legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: #707070;
+  font-size: 12px;
+}
+
+.weekly-goal-card__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.weekly-goal-card__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.weekly-goal-card__dot--completed {
+  background: #0b23f4;
+}
+
+.weekly-goal-card__dot--remaining {
+  background: #aab2ff;
+}
+
+.weekly-summary__stats {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.weekly-stat-card {
+  box-sizing: border-box;
+  min-height: 103px;
+  padding: 22px 30px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.weekly-stat-card h3 {
+  margin: 0;
+  color: #707070;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.weekly-stat-card p {
+  margin: 8px 0 0;
+  color: #aab2ff;
+  font-size: 16px;
+}
+
+.weekly-stat-card strong {
+  color: #0b23f4;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.weekly-stat-card__distance,
+.weekly-stat-card__distance strong {
+  color: #f4320b;
+}
+
 .distance-card,
-.heart-rate-card {
+.heart-rate-card,
+.weekly-goal-card {
   transition: box-shadow 180ms ease;
 }
 
 .distance-card:hover,
-.heart-rate-card:hover {
+.heart-rate-card:hover,
+.weekly-goal-card:hover {
   box-shadow: 0 4px 54px -18px rgba(157, 167, 251, 0.6);
 }
 
 @media (max-width: 1120px) {
   .dashboard__charts {
+    grid-template-columns: minmax(0, 583px);
+  }
+
+  .weekly-summary__grid {
     grid-template-columns: minmax(0, 583px);
   }
 }
@@ -181,11 +315,26 @@ body {
   .heart-rate-card__chart {
     height: 300px;
   }
+
+  .weekly-summary {
+    margin-top: 48px;
+  }
+
+  .weekly-goal-card,
+  .weekly-stat-card {
+    min-height: auto;
+    padding: 24px;
+  }
+
+  .weekly-goal-card__chart {
+    height: 180px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .distance-card,
-  .heart-rate-card {
+  .heart-rate-card,
+  .weekly-goal-card {
     transition: none;
   }
 }

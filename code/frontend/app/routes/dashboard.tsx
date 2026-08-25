@@ -1,5 +1,6 @@
 import { DistanceChart } from "../components/distance-chart/distance-chart";
 import { HeartRateChart } from "../components/heart-rate-chart/heart-rate-chart";
+import { WeeklyGoalChart } from "../components/weekly-goal-chart/weekly-goal-chart";
 import { mockUserActivity } from "../data/user-activity/user-activity.mock";
 
 export function meta() {
@@ -17,6 +18,7 @@ export default function Dashboard() {
                 <DistanceChart activity={mockUserActivity} />
                 <HeartRateChart activity={mockUserActivity} />
             </div>
+            <WeeklyGoalChart activity={mockUserActivity} goal={6} />
         </main>
     );
 }

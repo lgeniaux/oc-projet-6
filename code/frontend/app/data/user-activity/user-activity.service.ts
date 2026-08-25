@@ -20,6 +20,14 @@ export type DailyHeartRate = {
     average: number | null;
 };
 
+export type WeeklySummary = {
+    startDate: string;
+    endDate: string;
+    sessions: number;
+    duration: number;
+    distance: number;
+};
+
 function parseDate(date: string) {
     return new Date(date + "T00:00:00Z");
 }
@@ -149,4 +157,41 @@ export function getWeeklyHeartRates(activity: UserActivityDTO): DailyHeartRate[]
     }
 
     return days;
+}
+
+export function getWeeklySummary(activity: UserActivityDTO): WeeklySummary | null {
+    if (activity.length === 0) {
+        return null;
+    }
+
+    let latestDate = activity[0].date;
+
+    for (const session of activity) {
+        if (session.date > latestDate) {
+            latestDate = session.date;
+        }
+    }
+
+    const monday = startOfWeek(parseDate(latestDate));
+    const sunday = new Date(monday.getTime() + 6 * DAY_IN_MS);
+    const summary: WeeklySummary = {
+        startDate: toISODate(monday),
+        endDate: toISODate(sunday),
+        sessions: 0,
+        duration: 0,
+        distance: 0,
+    };
+
+    for (const session of activity) {
+        const sessionDate = parseDate(session.date);
+
+        if (sessionDate >= monday && sessionDate <= sunday) {
+            summary.sessions += 1;
+            summary.duration += session.duration;
+            summary.distance += session.distance;
+        }
+    }
+
+    summary.distance = Number(summary.distance.toFixed(1));
+    return summary;
 }
