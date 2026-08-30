@@ -5,6 +5,7 @@ import { getWeeklySummary } from "../../data/user-activity/user-activity.service
 type WeeklyGoalChartProps = {
     activity: UserActivityDTO;
     goal: number;
+    periodOffset: number;
 };
 
 function formatDate(date: string) {
@@ -13,7 +14,7 @@ function formatDate(date: string) {
 }
 
 export function WeeklyGoalChart(props: WeeklyGoalChartProps) {
-    const summary = getWeeklySummary(props.activity);
+    const summary = getWeeklySummary(props.activity, props.periodOffset);
     const goal = props.goal > 0 ? props.goal : 0;
     const completed = summary?.sessions ?? 0;
     const remaining = Math.max(goal - completed, 0);
@@ -38,7 +39,10 @@ export function WeeklyGoalChart(props: WeeklyGoalChartProps) {
     }
 
     return (
-        <section className="weekly-summary" aria-labelledby="weekly-summary-title">
+        <section
+            className="weekly-summary"
+            aria-labelledby="weekly-summary-title"
+        >
             <header className="weekly-summary__header">
                 <h2 id="weekly-summary-title">Cette semaine</h2>
                 <p>{period}</p>
@@ -75,14 +79,19 @@ export function WeeklyGoalChart(props: WeeklyGoalChartProps) {
                         </ResponsiveContainer>
                     </div>
 
-                    <div className="weekly-goal-card__legend" aria-label="Légende de l'objectif">
+                    <div
+                        className="weekly-goal-card__legend"
+                        aria-label="Légende de l'objectif"
+                    >
                         <span>
                             <i className="weekly-goal-card__dot weekly-goal-card__dot--completed" />
-                            {completed} {completed > 1 ? "réalisées" : "réalisée"}
+                            {completed}{" "}
+                            {completed > 1 ? "réalisées" : "réalisée"}
                         </span>
                         <span>
                             <i className="weekly-goal-card__dot weekly-goal-card__dot--remaining" />
-                            {remaining} {remaining > 1 ? "restantes" : "restante"}
+                            {remaining}{" "}
+                            {remaining > 1 ? "restantes" : "restante"}
                         </span>
                     </div>
                 </article>
@@ -97,7 +106,10 @@ export function WeeklyGoalChart(props: WeeklyGoalChartProps) {
                     <article className="weekly-stat-card">
                         <h3>Distance</h3>
                         <p className="weekly-stat-card__distance">
-                            <strong>{(summary?.distance ?? 0).toFixed(1)}</strong> kilomètres
+                            <strong>
+                                {(summary?.distance ?? 0).toFixed(1)}
+                            </strong>{" "}
+                            kilomètres
                         </p>
                     </article>
                 </div>

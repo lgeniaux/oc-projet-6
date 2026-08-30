@@ -30,13 +30,7 @@ function startOfWeek(date: Date) {
     return monday;
 }
 
-export function mapActivityToWeeklyDistances(
-    activity: UserActivityDTO,
-): WeeklyDistance[] {
-    if (activity.length === 0) {
-        return [];
-    }
-
+function getLatestActivityDate(activity: UserActivityDTO) {
     let latestDate = activity[0].date;
 
     for (const session of activity) {
@@ -45,7 +39,44 @@ export function mapActivityToWeeklyDistances(
         }
     }
 
-    const firstMonday = startOfWeek(parseDate(latestDate));
+    return parseDate(latestDate);
+}
+
+function getPeriodWeekStart(activity: UserActivityDTO, periodOffset: number) {
+    const monday = startOfWeek(getLatestActivityDate(activity));
+    monday.setUTCDate(monday.getUTCDate() - Math.max(0, periodOffset) * 7);
+    return monday;
+}
+
+export function getOldestPeriodOffset(activity: UserActivityDTO): number {
+    if (activity.length === 0) {
+        return 0;
+    }
+
+    let oldestDate = activity[0].date;
+
+    for (const session of activity) {
+        if (session.date < oldestDate) {
+            oldestDate = session.date;
+        }
+    }
+
+    const latestWeek = getPeriodWeekStart(activity, 0);
+    const oldestWeek = startOfWeek(parseDate(oldestDate));
+    return Math.floor(
+        (latestWeek.getTime() - oldestWeek.getTime()) / WEEK_IN_MS,
+    );
+}
+
+export function mapActivityToWeeklyDistances(
+    activity: UserActivityDTO,
+    periodOffset = 0,
+): WeeklyDistance[] {
+    if (activity.length === 0) {
+        return [];
+    }
+
+    const firstMonday = getPeriodWeekStart(activity, periodOffset);
     firstMonday.setUTCDate(firstMonday.getUTCDate() - 21);
 
     const weeks: WeeklyDistance[] = [];
@@ -82,20 +113,13 @@ export function mapActivityToWeeklyDistances(
 
 export function getWeeklyHeartRates(
     activity: UserActivityDTO,
+    periodOffset = 0,
 ): DailyHeartRate[] {
     if (activity.length === 0) {
         return [];
     }
 
-    let latestDate = activity[0].date;
-
-    for (const session of activity) {
-        if (session.date > latestDate) {
-            latestDate = session.date;
-        }
-    }
-
-    const monday = startOfWeek(parseDate(latestDate));
+    const monday = getPeriodWeekStart(activity, periodOffset);
     const days: DailyHeartRate[] = [];
     const sessionCounts = [0, 0, 0, 0, 0, 0, 0];
 
@@ -149,20 +173,13 @@ export function getWeeklyHeartRates(
 
 export function getWeeklySummary(
     activity: UserActivityDTO,
+    periodOffset = 0,
 ): WeeklySummary | null {
     if (activity.length === 0) {
         return null;
     }
 
-    let latestDate = activity[0].date;
-
-    for (const session of activity) {
-        if (session.date > latestDate) {
-            latestDate = session.date;
-        }
-    }
-
-    const monday = startOfWeek(parseDate(latestDate));
+    const monday = getPeriodWeekStart(activity, periodOffset);
     const sunday = new Date(monday.getTime() + 6 * DAY_IN_MS);
     const summary: WeeklySummary = {
         startDate: toISODate(monday),
