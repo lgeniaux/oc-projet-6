@@ -55,10 +55,10 @@ curl -X POST http://localhost:8000/api/login \
   -d '{"username": "sophiemartin", "password": "password123"}'
 ```
 
-2. Use the received token in subsequent requests in the Authorization header:
+1. Use the received token in subsequent requests in the Authorization header. Store it in `JWT_TOKEN` first:
 
 ```bash
-curl -H "Authorization: Bearer your-jwt-token" http://localhost:8000/api/user-info
+curl -H "Authorization: Bearer ${JWT_TOKEN}" http://localhost:8000/api/user-info
 ```
 
 ### 4.1 Available Users
@@ -83,10 +83,13 @@ All these endpoints require authentication via a Bearer token in the header:
 `Authorization: Bearer <your_token>`
 
 #### Get User Information
+
 ```http
 GET /api/user-info
 ```
+
 Returns the user profile and overall statistics:
+
 ```json
 {
   "profile": {
@@ -107,28 +110,31 @@ Returns the user profile and overall statistics:
 ```
 
 #### Get Activity Sessions
+
 ```http
 GET /api/user-activity?startWeek=<date>&endWeek=<date>
 ```
+
 Returns an array of running sessions between two dates (sorted ascending, future dates excluded).
 
 **Parameters:**
+
 - `startWeek`: Start date (ISO format)
 - `endWeek`: End date (ISO format)
 
-
 #### Access Profile Images
+
 ```http
 GET /images/<filename>
 ```
+
 Serves the static profile images (e.g. the `profilePicture` URLs returned by `/api/user-info`).
 
-
 #### Notes
+
 - All dates should be in ISO format (YYYY-MM-DD)
 - All distances are in kilometers
 - All durations are in minutes
-
 
 ### 5.3 Examples of queries
 
@@ -139,10 +145,10 @@ curl -X POST http://localhost:8000/api/login \
   -d '{"username": "sophiemartin", "password": "password123"}'
 
 # Get user data
-curl -H "Authorization: Bearer your-jwt-token" http://localhost:8000/api/user-info
+curl -H "Authorization: Bearer ${JWT_TOKEN}" http://localhost:8000/api/user-info
 
 # Get user activity
-curl -H "Authorization: Bearer your-jwt-token" \
+curl -H "Authorization: Bearer ${JWT_TOKEN}" \
   "http://localhost:8000/api/user-activity?startWeek=2025-01-01&endWeek=2025-01-31"
 ```
 

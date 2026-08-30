@@ -1,10 +1,9 @@
+import { API_BASE_URL } from "../../config/api";
 import type { UserInfo, UserInfoDTO } from "./user-info.types";
 import { mapUserInfoDTOToUserInfo } from "./user-info.mapper";
 
-const USER_INFO_URL = "http://localhost:8000/api/user-info";
-
 export async function getUserInfo(token: string): Promise<UserInfo> {
-    const response = await fetch(USER_INFO_URL, {
+    const response = await fetch(`${API_BASE_URL}/api/user-info`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

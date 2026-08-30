@@ -1,34 +1,14 @@
-import type { UserActivityDTO } from "./user-activity.types";
+import { API_BASE_URL } from "../../config/api";
+import type {
+    DailyHeartRate,
+    UserActivityDTO,
+    WeeklyDistance,
+    WeeklySummary,
+} from "./user-activity.types";
 
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 const WEEK_IN_MS = 7 * DAY_IN_MS;
-
-const USER_ACTIVITY_URL = "http://localhost:8000/api/user-activity";
-
-export type WeeklyDistance = {
-    week: string;
-    distance: number;
-    startDate: string;
-    endDate: string;
-};
-
 const WEEK_DAYS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
-
-export type DailyHeartRate = {
-    day: string;
-    date: string;
-    min: number | null;
-    max: number | null;
-    average: number | null;
-};
-
-export type WeeklySummary = {
-    startDate: string;
-    endDate: string;
-    sessions: number;
-    duration: number;
-    distance: number;
-};
 
 function parseDate(date: string) {
     return new Date(date + "T00:00:00Z");
@@ -50,7 +30,9 @@ function startOfWeek(date: Date) {
     return monday;
 }
 
-export function mapActivityToWeeklyDistances(activity: UserActivityDTO): WeeklyDistance[] {
+export function mapActivityToWeeklyDistances(
+    activity: UserActivityDTO,
+): WeeklyDistance[] {
     if (activity.length === 0) {
         return [];
     }
@@ -82,7 +64,8 @@ export function mapActivityToWeeklyDistances(activity: UserActivityDTO): WeeklyD
 
     for (const session of activity) {
         const weekIndex = Math.floor(
-            (parseDate(session.date).getTime() - firstMonday.getTime()) / WEEK_IN_MS
+            (parseDate(session.date).getTime() - firstMonday.getTime()) /
+                WEEK_IN_MS,
         );
 
         if (weekIndex >= 0 && weekIndex < weeks.length) {
@@ -97,7 +80,9 @@ export function mapActivityToWeeklyDistances(activity: UserActivityDTO): WeeklyD
     return weeks;
 }
 
-export function getWeeklyHeartRates(activity: UserActivityDTO): DailyHeartRate[] {
+export function getWeeklyHeartRates(
+    activity: UserActivityDTO,
+): DailyHeartRate[] {
     if (activity.length === 0) {
         return [];
     }
@@ -128,7 +113,7 @@ export function getWeeklyHeartRates(activity: UserActivityDTO): DailyHeartRate[]
 
     for (const session of activity) {
         const dayIndex = Math.floor(
-            (parseDate(session.date).getTime() - monday.getTime()) / DAY_IN_MS
+            (parseDate(session.date).getTime() - monday.getTime()) / DAY_IN_MS,
         );
 
         if (dayIndex < 0 || dayIndex >= days.length) {
@@ -148,7 +133,8 @@ export function getWeeklyHeartRates(activity: UserActivityDTO): DailyHeartRate[]
 
         const count = sessionCounts[dayIndex];
         const currentAverage = day.average ?? 0;
-        day.average = (currentAverage * count + heartRate.average) / (count + 1);
+        day.average =
+            (currentAverage * count + heartRate.average) / (count + 1);
         sessionCounts[dayIndex] = count + 1;
     }
 
@@ -161,7 +147,9 @@ export function getWeeklyHeartRates(activity: UserActivityDTO): DailyHeartRate[]
     return days;
 }
 
-export function getWeeklySummary(activity: UserActivityDTO): WeeklySummary | null {
+export function getWeeklySummary(
+    activity: UserActivityDTO,
+): WeeklySummary | null {
     if (activity.length === 0) {
         return null;
     }
@@ -204,11 +192,14 @@ export async function getUserActivity(token: string): Promise<UserActivityDTO> {
         startWeek: "2000-01-01",
         endWeek: endDate,
     });
-    const response = await fetch(`${USER_ACTIVITY_URL}?${searchParams}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
+    const response = await fetch(
+        `${API_BASE_URL}/api/user-activity?${searchParams}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         },
-    });
+    );
 
     if (!response.ok) {
         if (response.status === 401 || response.status === 403) {
