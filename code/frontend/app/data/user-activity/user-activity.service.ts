@@ -203,6 +203,44 @@ export function getWeeklySummary(
     return summary;
 }
 
+export function getTotalCalories(activity: UserActivityDTO): number {
+    let totalCalories = 0;
+
+    for (const session of activity) {
+        totalCalories += session.caloriesBurned;
+    }
+
+    return totalCalories;
+}
+
+export function getRestDays(
+    activity: UserActivityDTO,
+    createdAt: string,
+    today = new Date(),
+): number {
+    const firstDay = parseDate(createdAt.slice(0, 10));
+    const lastDay = parseDate(toISODate(today));
+
+    if (firstDay > lastDay) {
+        return 0;
+    }
+
+    const activeDates = new Set(activity.map((session) => session.date));
+    const totalDays =
+        Math.floor((lastDay.getTime() - firstDay.getTime()) / DAY_IN_MS) + 1;
+    let restDays = 0;
+
+    for (let offset = 0; offset < totalDays; offset++) {
+        const date = new Date(firstDay.getTime() + offset * DAY_IN_MS);
+
+        if (!activeDates.has(toISODate(date))) {
+            restDays += 1;
+        }
+    }
+
+    return restDays;
+}
+
 export async function getUserActivity(token: string): Promise<UserActivityDTO> {
     const endDate = new Date().toISOString().slice(0, 10);
     const searchParams = new URLSearchParams({

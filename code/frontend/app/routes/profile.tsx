@@ -1,5 +1,6 @@
 import type { Route } from "./+types/profile";
 import { UserSummary } from "../components/user-summary/user-summary";
+import { useUserActivity } from "../hooks/use-user-activity";
 import { useUserInfo } from "../hooks/use-user-info";
 import "../styles/profile.css";
 
@@ -12,8 +13,13 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Profile() {
     const { userInfo, loading, error } = useUserInfo();
+    const {
+        activity,
+        loading: activityLoading,
+        error: activityError,
+    } = useUserActivity();
 
-    if (loading) {
+    if (loading || activityLoading) {
         return (
             <main className="profile-page">
                 <p className="page-status" aria-live="polite">
@@ -23,11 +29,11 @@ export default function Profile() {
         );
     }
 
-    if (error || !userInfo) {
+    if (error || activityError || !userInfo || !activity) {
         return (
             <main className="profile-page">
                 <p className="page-status page-status--error" role="alert">
-                    {error ?? "Profil indisponible"}
+                    {error ?? activityError ?? "Profil indisponible"}
                 </p>
             </main>
         );
@@ -35,7 +41,7 @@ export default function Profile() {
 
     return (
         <main className="profile-page">
-            <UserSummary userInfo={userInfo} />
+            <UserSummary userInfo={userInfo} activity={activity} />
         </main>
     );
 }
