@@ -1,7 +1,7 @@
 import type { Route } from "./+types/profile";
 import { UserSummary } from "../components/user-summary/user-summary";
 import { useUserInfo } from "../hooks/use-user-info";
-
+import "../styles/profile.css";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -16,7 +16,9 @@ export default function Profile() {
     if (loading) {
         return (
             <main className="profile-page">
-                <p className="page-status" aria-live="polite">Chargement du profil…</p>
+                <p className="page-status" aria-live="polite">
+                    Chargement du profil…
+                </p>
             </main>
         );
     }

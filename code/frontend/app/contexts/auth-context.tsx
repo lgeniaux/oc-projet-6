@@ -3,6 +3,7 @@ import { createContext, useContext, useState, type ReactNode } from "react";
 type AuthContextValue = {
     token: string | null;
     setToken: (token: string) => void;
+    logout: () => void;
 };
 
 type AuthProviderProps = {
@@ -25,8 +26,13 @@ export function AuthProvider(props: AuthProviderProps) {
         setTokenState(token);
     }
 
+    function logout() {
+        sessionStorage.removeItem("token");
+        setTokenState(null);
+    }
+
     return (
-        <AuthContext.Provider value={{ token, setToken }}>
+        <AuthContext.Provider value={{ token, setToken, logout }}>
             {props.children}
         </AuthContext.Provider>
     );

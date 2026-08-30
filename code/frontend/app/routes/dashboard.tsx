@@ -2,6 +2,7 @@ import { DistanceChart } from "../components/distance-chart/distance-chart";
 import { HeartRateChart } from "../components/heart-rate-chart/heart-rate-chart";
 import { WeeklyGoalChart } from "../components/weekly-goal-chart/weekly-goal-chart";
 import { useUserActivity } from "../hooks/use-user-activity";
+import "../styles/dashboard.css";
 
 export function meta() {
     return [
@@ -16,7 +17,9 @@ export default function Dashboard() {
     if (loading) {
         return (
             <main className="dashboard">
-                <p className="page-status" aria-live="polite">Chargement des activités…</p>
+                <p className="page-status" aria-live="polite">
+                    Chargement des activités…
+                </p>
             </main>
         );
     }

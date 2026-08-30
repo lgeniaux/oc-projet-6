@@ -7,36 +7,48 @@ export function LoginForm() {
     const { submit, loading, error } = useLogin();
 
     return (
-        <form onSubmit={(event) => {
-            event.preventDefault();
-            void submit({ username, password });
-        }}>
-            <div>
-                <label htmlFor="username">Username</label>
+        <form
+            className="login-form"
+            onSubmit={(event) => {
+                event.preventDefault();
+                void submit({ username, password });
+            }}
+        >
+            <div className="login-form__field">
+                <label htmlFor="username">Nom d'utilisateur</label>
                 <input
                     type="text"
                     id="username"
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(event) => setUsername(event.target.value)}
                     autoComplete="username"
                     required
                 />
             </div>
-            <div>
-                <label htmlFor="password">Password</label>
+            <div className="login-form__field">
+                <label htmlFor="password">Mot de passe</label>
                 <input
                     type="password"
                     id="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(event) => setPassword(event.target.value)}
                     autoComplete="current-password"
                     required
                 />
             </div>
-            {error && <p role="alert">{error}</p>}
-            <button type="submit" disabled={loading}>
+            {error && (
+                <p className="login-form__error" role="alert">
+                    {error}
+                </p>
+            )}
+            <button
+                className="login-form__submit"
+                type="submit"
+                disabled={loading}
+            >
                 {loading ? "Connexion…" : "Se connecter"}
             </button>
+            <p className="login-form__forgot">Mot de passe oublié ?</p>
         </form>
     );
 }
