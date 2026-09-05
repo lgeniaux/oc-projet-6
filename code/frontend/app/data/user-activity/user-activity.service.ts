@@ -1,4 +1,6 @@
 import { API_BASE_URL } from "../../config/api";
+import { USE_MOCK_DATA } from "../../config/data-source";
+import { mockUserActivity } from "./user-activity.mock";
 import type {
     DailyHeartRate,
     UserActivityDTO,
@@ -242,6 +244,10 @@ export function getRestDays(
 }
 
 export async function getUserActivity(token: string): Promise<UserActivityDTO> {
+    if (USE_MOCK_DATA) {
+        return mockUserActivity;
+    }
+
     const endDate = new Date().toISOString().slice(0, 10);
     const searchParams = new URLSearchParams({
         startWeek: "2000-01-01",
