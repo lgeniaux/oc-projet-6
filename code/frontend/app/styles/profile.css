@@ -136,10 +136,20 @@
   transform: translateY(-2px);
 }
 
-@media (max-width: 1120px) {
+@media (max-width: 1120px) and (min-width: 1024px) {
+  .profile-page {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
   .user-summary {
-    grid-template-columns: minmax(0, 583px);
+    grid-template-columns: minmax(0, 45.5fr) minmax(0, 54.5fr);
     gap: 32px;
+  }
+
+  .profile-statistics__grid article {
+    padding-right: 22px;
+    padding-left: 22px;
   }
 }
 

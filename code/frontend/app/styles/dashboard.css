@@ -368,13 +368,27 @@
   box-shadow: 0 4px 54px -18px rgba(157, 167, 251, 0.6);
 }
 
-@media (max-width: 1120px) {
+@media (max-width: 1120px) and (min-width: 1024px) {
+  .dashboard {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
   .dashboard__charts {
-    grid-template-columns: minmax(0, 583px);
+    grid-template-columns: minmax(0, 42.3fr) minmax(0, 55.3fr);
+    gap: 20px;
+  }
+
+  .distance-card,
+  .heart-rate-card {
+    width: 100%;
+    padding-right: 24px;
+    padding-left: 24px;
   }
 
   .weekly-summary__grid {
-    grid-template-columns: minmax(0, 583px);
+    grid-template-columns: minmax(0, 42.8fr) minmax(0, 57.2fr);
+    gap: 20px;
   }
 }
 

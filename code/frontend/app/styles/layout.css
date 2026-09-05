@@ -81,6 +81,7 @@
 .app-footer__mark {
   width: 3px;
   height: 16px;
+  margin-right: 15px;
   margin-left: 24px;
   border-radius: 2px;
   background: #f4320b;
